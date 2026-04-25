@@ -1,25 +1,26 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import type { Ingrediente } from "../types/ingrediente";
 
-const API_URL = "http://127.0.0.1:8000/productos/";
-const QUERY_KEY = ["productos"];
+const API_URL = "http://127.0.0.1:8000/ingredientes/";
+const QUERY_KEY = ["ingredientes"];
 
-const fetchProductos = async () => {
+const fetchIngredientes = async () => {
   const res = await fetch(API_URL);
-  if (!res.ok) throw new Error("Error al obtener productos");
+  if (!res.ok) throw new Error("Error al obtener ingredientes");
   return res.json();
 };
 
-const createProducto = async (data: any) => {
+const createIngrediente = async (data: any) => {
   const res = await fetch(API_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
 
-  if (!res.ok) throw new Error("Error al crear producto");
+  if (!res.ok) throw new Error("Error al crear ingrediente");
 };
 
-const updateProducto = async ({
+const updateIngrediente = async ({
   id,
   data,
 }: {
@@ -32,52 +33,52 @@ const updateProducto = async ({
     body: JSON.stringify(data),
   });
 
-  if (!res.ok) throw new Error("Error al actualizar producto");
+  if (!res.ok) throw new Error("Error al actualizar ingrediente");
 };
 
-const deleteProducto = async (id: number) => {
+const deleteIngrediente = async (id: number) => {
   const res = await fetch(`${API_URL}${id}`, {
     method: "DELETE",
   });
 
-  if (!res.ok) throw new Error("Error al eliminar producto");
+  if (!res.ok) throw new Error("Error al eliminar ingrediente");
 };
 
-export const useProductos = () => {
+export const useIngrediente = () => {
   const queryClient = useQueryClient();
 
   const {
-    data: productos,
+    data: ingredientes,
     isLoading,
     isError,
   } = useQuery({
     queryKey: QUERY_KEY,
-    queryFn: fetchProductos,
+    queryFn: fetchIngredientes,
   });
 
   const createMutation = useMutation({
-    mutationFn: createProducto,
+    mutationFn: createIngrediente,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEY });
     },
   });
 
   const updateMutation = useMutation({
-    mutationFn: updateProducto,
+    mutationFn: updateIngrediente,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEY });
     },
   });
 
   const deleteMutation = useMutation({
-    mutationFn: deleteProducto,
+    mutationFn: deleteIngrediente,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEY });
     },
   });
 
   return {
-    productos: productos ?? [],
+    ingredientes: ingredientes ?? [],
     loading: isLoading,
     error: isError,
 
@@ -87,3 +88,5 @@ export const useProductos = () => {
     handleDelete: deleteMutation.mutate,
   };
 };
+
+export type { Ingrediente };

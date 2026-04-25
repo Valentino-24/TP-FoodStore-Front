@@ -1,14 +1,5 @@
 import { useEffect, useState } from "react";
-
-// después lo tipamos mejor, por ahora simple
-type Categoria = {
-  id: number;
-  nombre: string;
-};
-
-type CategoriaCreate = {
-  nombre: string;
-};
+import type { Categoria, CategoriaCreate } from "../types/categoria";
 
 const API_URL = "http://127.0.0.1:8000/categorias/";
 
@@ -17,9 +8,6 @@ export const useCategorias = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // ========================
-  // GET
-  // ========================
   const fetchCategorias = async () => {
     setLoading(true);
     try {
@@ -39,9 +27,6 @@ export const useCategorias = () => {
     }
   };
 
-  // ========================
-  // CREATE
-  // ========================
   const handleCreate = async (data: CategoriaCreate) => {
     try {
       const res = await fetch(API_URL, {
@@ -60,9 +45,6 @@ export const useCategorias = () => {
     }
   };
 
-  // ========================
-  // UPDATE
-  // ========================
   const handleUpdate = async (id: number, data: CategoriaCreate) => {
     try {
       const res = await fetch(`${API_URL}${id}`, {
@@ -81,9 +63,6 @@ export const useCategorias = () => {
     }
   };
 
-  // ========================
-  // DELETE
-  // ========================
   const handleDelete = async (id: number) => {
     try {
       const res = await fetch(`${API_URL}${id}`, {
@@ -98,9 +77,6 @@ export const useCategorias = () => {
     }
   };
 
-  // ========================
-  // INIT
-  // ========================
   useEffect(() => {
     fetchCategorias();
   }, []);
@@ -114,3 +90,5 @@ export const useCategorias = () => {
     handleDelete,
   };
 };
+
+export type { Categoria, CategoriaCreate };

@@ -15,7 +15,7 @@ export default function ProductCard({ producto }: { producto: Producto }) {
 
       {categoriaPrincipal && (
         <p className="text-yellow-400 font-semibold">
-          ⭐ {categoriaPrincipal.nombre}
+          [Principal] {categoriaPrincipal.nombre}
         </p>
       )}
 
